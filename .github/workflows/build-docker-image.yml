@@ -3,11 +3,11 @@ name: Build docker image
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build:
-    runs-on: 'develop'
+    runs-on: 'master'
 
     steps:
     - name: Checkout repository
