@@ -1,17 +1,17 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm/dist/interfaces/typeorm-options.interface';
-import * as dotenv from 'dotenv';
+import { TypeOrmModuleOptions } from "@nestjs/typeorm/dist/interfaces/typeorm-options.interface";
+import * as dotenv from "dotenv";
 
 dotenv.config(); // Load .env file
 
 export const dbconfig = {
-  type: 'postgres',
-  host: process.env.DATABASE_HOST,
+  type: "postgres",
+  host: process.env.DATABASE_HOST || "110.44.123.230",
   port:
     (process.env.DATABASE_PORT && parseInt(process.env.DATABASE_PORT, 10)) ||
-    3306,
-  database: process.env.DATABASE_NAME,
-  username: process.env.DATABASE_USER,
-  password: process.env.DATABASE_PASSWORD,
+    5432,
+  database: process.env.DATABASE_NAME || "expense",
+  username: process.env.DATABASE_USER || "expense",
+  password: process.env.DATABASE_PASSWORD || "expense",
   // synchronize: process.env.DATABASE_SCHEMA_SYNC === 'true',
   autoLoadEntities: true,
   bigNumberStrings: false,
