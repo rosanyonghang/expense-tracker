@@ -1,0 +1,6 @@
+export enum NotificationType {
+  GLOBAL = 'GLOBAL',
+  USER = 'USER',
+  MESSAGE = 'MESSAGE',
+  RECURRING_TRANSACTION = 'RECURRING_TRANSACTION',
+}
