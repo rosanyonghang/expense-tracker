@@ -16,11 +16,18 @@ export class FindUserDetailsHandler
     readonly userRepository: Repository<User>,
   ) {}
 
-  async execute(query: FindUserDetailsQuery): Promise<User> {
-    return this.userRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('UserDetail', 'details', 'details.userId = user.id')
-      .where('user.id = :userId', { userId: query.userId })
-      .getOneOrFail();
+  async execute(query: FindUserDetailsQuery) {
+    const res = await this.userRepository.query(
+      `
+      SELECT "user".id, "user".email, "user".prefix, "user".phone, "user"."googleId", "user"."facebookId", "user".verified, "user"."firstTime", "user".status, "user".role, "user"."userType",
+      user_detail.fullname, user_detail.img, user_detail."openingBalance", user_detail.address, user_detail.occupation
+      FROM "user"
+      LEFT JOIN user_detail ON "user".id = user_detail."userId"
+      WHERE "user".id = $1
+    `,
+      [query.userId],
+    );
+
+    return res;
   }
 }

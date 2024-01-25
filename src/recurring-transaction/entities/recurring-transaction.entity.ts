@@ -1,10 +1,11 @@
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, DeleteDateColumn, Entity, ManyToOne, OneToOne } from 'typeorm';
 import { CoreEntity } from '../../base/entities/base.entity';
 import { User } from '../../user/entities/user.entity';
 import {
   RecurringType,
   TransactionType,
 } from '../../utils/enums/transaction.enum';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class RecurringTransaction extends CoreEntity {
@@ -41,12 +42,16 @@ export class RecurringTransaction extends CoreEntity {
     default: TransactionType.EXPENSE,
   })
   type: TransactionType;
-
-  @Column({
-    nullable: false,
-  })
-  recurringDate: Date;
+  //
+  // @Column({
+  //   nullable: false,
+  // })
+  // recurringDate: Date;
 
   @ManyToOne(() => User)
   user: User;
+
+  @Exclude()
+  @DeleteDateColumn()
+  public deletedAt: Date;
 }

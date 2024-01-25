@@ -3,6 +3,7 @@ import { CoreEntity } from '../../base/entities/base.entity';
 import { User } from '../../user/entities/user.entity';
 import { Account } from '../../account/entities/account.entity';
 import { TransactionType } from '../../utils/enums/transaction.enum';
+import { RecurringTransaction } from '../../recurring-transaction/entities/recurring-transaction.entity';
 
 @Entity()
 export class Transaction extends CoreEntity {
@@ -19,7 +20,7 @@ export class Transaction extends CoreEntity {
   @Column({
     nullable: true,
   })
-  img: string;
+  document: string;
 
   @Column({
     nullable: false,
@@ -38,4 +39,7 @@ export class Transaction extends CoreEntity {
 
   @ManyToOne(() => User)
   user: User;
+
+  @ManyToOne(() => RecurringTransaction)
+  recurringTransaction: RecurringTransaction;
 }

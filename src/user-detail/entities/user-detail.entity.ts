@@ -8,25 +8,21 @@ export class UserDetail extends CoreEntity {
   readonly fullname: string;
 
   @Column({
-    unique: true,
     nullable: true,
   })
   readonly img: string;
 
   @Column({
-    nullable: true,
     default: 0,
   })
   readonly openingBalance: number;
 
   @Column({
-    unique: true,
     nullable: true,
   })
   readonly address: string;
 
   @Column({
-    unique: true,
     nullable: true,
   })
   readonly occupation: string;

@@ -20,4 +20,11 @@ export class AccountService extends BaseService<Account> {
       throw new BadGatewayException(error);
     }
   }
+
+  async getMyData(userId: number) {
+    return this.accountRepository
+      .createQueryBuilder('account')
+      .where('account.createdBy = :id', { id: userId })
+      .getMany();
+  }
 }

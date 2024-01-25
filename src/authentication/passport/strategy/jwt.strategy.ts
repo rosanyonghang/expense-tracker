@@ -25,8 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     try {
-      console.log('test');
-
       const user: User = await this.tokenStorage.validateToken(token);
 
       // @ts-ignore

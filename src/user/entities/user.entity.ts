@@ -31,7 +31,6 @@ export class User {
   readonly email: string;
 
   @Column({
-    unique: true,
     nullable: true,
     default: '977',
   })
@@ -39,7 +38,6 @@ export class User {
 
   @Column({
     unique: true,
-    nullable: true,
   })
   readonly phone: string;
 
@@ -63,13 +61,12 @@ export class User {
   readonly password: string;
 
   @Column({
-    unique: true,
     nullable: true,
+    default: false,
   })
   readonly verified: boolean;
 
   @Column({
-    unique: true,
     nullable: true,
     default: true,
   })

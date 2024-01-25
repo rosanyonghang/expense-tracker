@@ -8,8 +8,15 @@ import { Repository } from 'typeorm';
 export class RecurringTransactionService extends BaseService<RecurringTransaction> {
   constructor(
     @InjectRepository(RecurringTransaction)
-    private readonly accountRepository: Repository<RecurringTransaction>,
+    private readonly recurringTransaction: Repository<RecurringTransaction>,
   ) {
-    super(accountRepository);
+    super(recurringTransaction);
+  }
+
+  async getMyData(userId: number) {
+    return this.recurringTransaction
+      .createQueryBuilder('recurringTransaction')
+      .where('recurringTransaction.userId = :id', { id: userId })
+      .getMany();
   }
 }

@@ -15,7 +15,7 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserExceptionFilter } from '../exception-filters/create-user.exception-filter';
 import { ApiBasicAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import { TokenGuard } from '../../../authentication/http/token.guard';
+import { TokenGuard } from '../../../authentication/http/guards/token.guard';
 import { DuplicateUserExceptionFilter } from '../exception-filters/duplicate-user.exception-filter';
 import { CreateUserRequest } from '../requests/create-user.request';
 import { CreateUserCommand } from '../../commands/create-user.command';
@@ -73,7 +73,7 @@ export class UserController {
       img: image ? image.filename : undefined,
     });
 
-    await this.commandBus.execute(createUserCommand);
+    return this.commandBus.execute(createUserCommand);
   }
 
   @UseGuards(TokenGuard)

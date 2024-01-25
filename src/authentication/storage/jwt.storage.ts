@@ -43,15 +43,12 @@ export class JwtStorage implements TokenStorage {
   }
 
   public async validateToken(token: string): Promise<User> {
-    console.log(token);
-
     const tokenBody: TokenBody = await this.jwtService.verifyAsync<TokenBody>(
       token,
       {
         secret: process.env.JWT_SECRET ?? 'restrobytessecret2023',
       },
     );
-    console.log(token);
 
     if (tokenBody.type !== JwtStorage.TOKEN_TYPE) {
       throw new Error('Invalid token');

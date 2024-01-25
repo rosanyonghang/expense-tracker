@@ -15,7 +15,7 @@ import {
 import { ImageService } from './image.service';
 import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { editFileName, imageFileFilter } from '../utils/images.utils';
-import { TokenGuard } from '../authentication/http/token.guard';
+import { TokenGuard } from '../authentication/http/guards/token.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { UploadImageDto } from './dto/create-image.dto';

@@ -12,4 +12,10 @@ export class DefaultSettingsService extends BaseService<DefaultSetting> {
   ) {
     super(defaultSettingRepository);
   }
+
+  async getHeroDetails() {
+    return this.defaultSettingRepository.find({
+      where: [{ code: 'HERO_TITLE' }, { code: 'HERO_SUB_TITLE' }],
+    });
+  }
 }

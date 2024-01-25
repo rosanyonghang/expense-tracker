@@ -63,6 +63,7 @@ export class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
       data: {
         id: user.id,
         email: user.email,
+        role: user.role,
       },
     });
 

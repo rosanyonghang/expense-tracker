@@ -19,6 +19,9 @@ import { ImageModule } from './image/image.module';
 import { DefaultSettingsModule } from './default-settings/default-settings.module';
 import { TestimonialModule } from './testimonial/testimonial.module';
 import { FeatureModule } from './feature/feature.module';
+import { NotificationsGateway } from './notification/notifications.gateway';
+import { SummaryController } from './summary/summary.controller';
+import { SummaryModule } from './summary/summary.module';
 
 @Module({
   imports: [
@@ -41,8 +44,9 @@ import { FeatureModule } from './feature/feature.module';
     DefaultSettingsModule,
     TestimonialModule,
     FeatureModule,
+    SummaryModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, SummaryController],
+  providers: [AppService, NotificationsGateway],
 })
 export class AppModule {}

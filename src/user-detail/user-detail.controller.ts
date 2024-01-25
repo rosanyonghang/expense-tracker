@@ -3,7 +3,7 @@ import { UserDetailService } from './user-detail.service';
 import { BaseController } from '../base/base.controller';
 import { UserDetail } from './entities/user-detail.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { TokenGuard } from '../authentication/http/token.guard';
+import { TokenGuard } from '../authentication/http/guards/token.guard';
 
 @Controller('user-detail')
 @ApiTags('User')
