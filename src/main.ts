@@ -59,8 +59,8 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   // app.use(helmet());
-  await app.listen(process.env.APP_PORT || '3030', () => {
-    console.log(`App running at port ${process.env.APP_PORT || '3030'}`);
+  await app.listen(process.env.APP_PORT || '3000', () => {
+    console.log(`App running at port ${process.env.APP_PORT || '3000'}`);
   });
 }
 bootstrap().then(() => console.log('app started'));
