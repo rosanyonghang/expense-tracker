@@ -5,7 +5,7 @@ dotenv.config(); // Load .env file
 
 export const dbconfig = {
   type: "postgres",
-  host: process.env.DATABASE_HOST || "110.44.123.230",
+  host: process.env.DATABASE_HOST || "192.168.100.114",
   port:
     (process.env.DATABASE_PORT && parseInt(process.env.DATABASE_PORT, 10)) ||
     5432,
