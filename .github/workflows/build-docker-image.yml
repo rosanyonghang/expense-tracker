@@ -1,0 +1,40 @@
+name: Build docker image
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: 'develop'
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    - name: Choose env values based on env
+      run: |
+        if [ "$GITHUB_REF" = "refs/heads/develop" ]; then
+          echo "Deploying to Development environment"
+          cp env.dev .env
+        else
+          echo "No deployment needed for this branch"
+        fi
+#    - name: Stop app if running
+#      run: pm2 stop LiveGalerie
+      continue-on-error: true
+    - name: cache npm dependencies
+      uses: actions/cache@v3
+      id: cache-primes
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-npm-v3-${{ hashFiles('package-lock.json') }}
+    - name: Run npm install
+      if: steps.cache-primes.outputs.cache-hit != 'true'
+      run: npm install
+    - name: Run npm build
+      run: npm run build
+    - name: Run the app again
+      run: npm run start:prod
+    - name: completed setup
+      run: echo "setup complete"
