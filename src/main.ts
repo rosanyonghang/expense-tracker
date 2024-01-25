@@ -32,7 +32,7 @@ async function bootstrap() {
       basicAuth({
         challenge: true,
         users: {
-          [`${process.env.SWAGGER_USER}`]: process.env.SWAGGER_PASSWORD,
+          "admin": "Vfr42wsX" ,
         },
       }),
     );
