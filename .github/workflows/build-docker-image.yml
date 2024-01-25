@@ -34,15 +34,15 @@ jobs:
           # Note: tags has to be all lower-case
           tags: ghcr.io/rosanyonghang/expense-tracker:latest
           # build on feature branches, push only on main branch
-          push: ${{ github.ref == 'refs/heads/dev' }}
-      - name: Run server script
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd ${{ secrets.DEPLOY_FOLDER_PATH }}
-            sh deploy.sh
+          push: ${{ github.ref == 'refs/heads/master' }}
+      # - name: Run server script
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.SSH_HOST }}
+      #     username: ${{ secrets.SSH_USER }}
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     script: |
+      #       cd ${{ secrets.DEPLOY_FOLDER_PATH }}
+      #       sh deploy.sh
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
