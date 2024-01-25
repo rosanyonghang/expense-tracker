@@ -51,6 +51,6 @@ export class ImageController {
 
   @Get('get-image/:imgpath')
   seeUploadedImage(@Param('imgpath') image, @Res() res) {
-    return res.sendFile(image, { root: './upload/images' });
+    return res.sendFile(image, { root: './upload/files' });
   }
 }
