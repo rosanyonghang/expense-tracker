@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -10,6 +11,7 @@ import { Exclude } from 'class-transformer';
 import { StatusEnum } from '../../utils/enums/status.enum';
 import { UserTypeEnum } from '../../utils/enums/user-type.enum';
 import { Role, UserType } from '../../utils/enums/user.enum';
+import { UserDetail } from '../../user-detail/entities/user-detail.entity';
 
 @Entity()
 export class User {
@@ -69,6 +71,7 @@ export class User {
   @Column({
     unique: true,
     nullable: true,
+    default: true,
   })
   readonly firstTime: boolean;
 
@@ -92,6 +95,9 @@ export class User {
     default: UserType.USER,
   })
   userType: UserType;
+  //
+  // @OneToOne(() => UserDetail, (details) => details.user, { cascade: true })
+  // details: UserDetail;
 
   @Exclude()
   @CreateDateColumn()

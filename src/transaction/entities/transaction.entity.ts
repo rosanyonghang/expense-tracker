@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
 import { CoreEntity } from '../../base/entities/base.entity';
 import { User } from '../../user/entities/user.entity';
 import { Account } from '../../account/entities/account.entity';
-import { TransactionType } from "../../utils/enums/transaction.enum";
+import { TransactionType } from '../../utils/enums/transaction.enum';
 
 @Entity()
 export class Transaction extends CoreEntity {

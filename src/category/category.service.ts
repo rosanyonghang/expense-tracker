@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { BaseService } from '../base/base.service';
 import { Category } from './entities/category.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,5 +11,13 @@ export class CategoryService extends BaseService<Category> {
     private readonly categoryRepository: Repository<Category>,
   ) {
     super(categoryRepository);
+  }
+
+  async delete(id: number) {
+    try {
+      await this.categoryRepository.softDelete(id);
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }

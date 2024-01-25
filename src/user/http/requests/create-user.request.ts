@@ -2,30 +2,14 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { Role } from '../../../utils/enums/user.enum';
+import { Role, UserType } from '../../../utils/enums/user.enum';
 
 export class CreateUserRequest {
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  readonly firstName: string;
-
-  @IsNotEmpty()
-  @IsString()
-  @ApiProperty()
-  readonly lastName: string;
-
-  @IsNotEmpty()
-  @ApiProperty({ enum: Role })
-  @IsEnum(Role, {
-    message: 'Invalid role supplied',
-  })
-  readonly role: Role;
-
   @IsNotEmpty()
   @IsEmail()
   @ApiProperty()
@@ -40,4 +24,41 @@ export class CreateUserRequest {
   @IsString()
   @ApiProperty()
   readonly phone: string;
+
+  @IsOptional()
+  @ApiProperty({ enum: Role })
+  @IsEnum(Role, {
+    message: 'Invalid role supplied',
+  })
+  readonly role: Role;
+
+  @IsOptional()
+  @ApiProperty({ enum: UserType })
+  @IsEnum(UserType, {
+    message: 'Invalid userType supplied',
+  })
+  readonly userType: Role;
+
+  @IsString()
+  @ApiProperty()
+  readonly fullname: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty({ type: 'string', format: 'binary' })
+  readonly img?: string;
+
+  @IsNumber()
+  @ApiProperty()
+  readonly openingBalance?: number;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  readonly address?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiProperty()
+  readonly occupation?: string;
 }

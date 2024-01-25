@@ -7,24 +7,28 @@ import {
   Post,
   Put,
   Req,
+  UploadedFile,
   UseFilters,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserExceptionFilter } from '../exception-filters/create-user.exception-filter';
-import { ApiBasicAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { TokenGuard } from '../../../authentication/http/token.guard';
-import { Role } from '../../../utils/enums/user.enum';
 import { DuplicateUserExceptionFilter } from '../exception-filters/duplicate-user.exception-filter';
 import { CreateUserRequest } from '../requests/create-user.request';
-import { CreateUserException } from '../../exceptions/create-user.exception';
 import { CreateUserCommand } from '../../commands/create-user.command';
 import { MessagePattern } from '@nestjs/microservices';
 import { User } from '../../entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserService } from '../services/user.service';
-
+import { diskStorage } from 'multer';
+import { editFileName, imageFileFilter } from '../../../utils/images.utils';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Image } from '../../../image/entities/image.entity';
+import { ImageService } from 'src/image/image.service';
 @Controller()
 @ApiTags('User')
 @ApiBasicAuth()
@@ -33,19 +37,43 @@ export class UserController {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly userService: UserService,
+    private readonly imageService: ImageService,
     private readonly commandBus: CommandBus,
   ) {}
 
   // @UseGuards(TokenGuard)
+
   @UseFilters(new DuplicateUserExceptionFilter())
   @UseFilters(new CreateUserExceptionFilter())
   @Post('/user')
-  async createUser(@Body() body: CreateUserRequest) {
-    // if (body.role !== Role.STAFF_ADMIN ) {
-    //   throw new CreateUserException(`You are not allowed to create ${body.role} user`);
-    // }
+  @UseInterceptors(
+    FileInterceptor('img', {
+      storage: diskStorage({
+        destination: './upload/files',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    }),
+  )
+  @ApiConsumes('multipart/form-data')
+  async createUser(
+    @Body() body: CreateUserRequest,
+    @UploadedFile() image?: any,
+  ) {
+    let imageFilename: string | undefined;
+    if (image) {
+      await this.imageService.createImage({
+        title: image,
+        filename: image,
+      });
+    }
 
-    await this.commandBus.execute(new CreateUserCommand(body));
+    const createUserCommand = new CreateUserCommand({
+      ...body,
+      img: image ? image.filename : undefined,
+    });
+
+    await this.commandBus.execute(createUserCommand);
   }
 
   @UseGuards(TokenGuard)

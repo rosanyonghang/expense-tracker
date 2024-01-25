@@ -1,26 +1,23 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAccountDto } from './dto/create-account.dto';
-import { UpdateAccountDto } from './dto/update-account.dto';
+import { BadGatewayException, Injectable } from '@nestjs/common';
+import { BaseService } from '../base/base.service';
+import { Account } from './entities/account.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class AccountService {
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+export class AccountService extends BaseService<Account> {
+  constructor(
+    @InjectRepository(Account)
+    private readonly accountRepository: Repository<Account>,
+  ) {
+    super(accountRepository);
   }
 
-  findAll() {
-    return `This action returns all account`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} account`;
-  }
-
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} account`;
+  async delete(id: number) {
+    try {
+      await this.accountRepository.softDelete(id);
+    } catch (error) {
+      throw new BadGatewayException(error);
+    }
   }
 }

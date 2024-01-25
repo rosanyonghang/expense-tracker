@@ -17,6 +17,10 @@ export class FindUserDetailsHandler
   ) {}
 
   async execute(query: FindUserDetailsQuery): Promise<User> {
-    return this.userRepository.findOneOrFail({ where: { id: query.userId } });
+    return this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('UserDetail', 'details', 'details.userId = user.id')
+      .where('user.id = :userId', { userId: query.userId })
+      .getOneOrFail();
   }
 }

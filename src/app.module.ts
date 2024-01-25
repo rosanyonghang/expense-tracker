@@ -15,6 +15,10 @@ import { TransactionModule } from './transaction/transaction.module';
 import { RecurringTransactionModule } from './recurring-transaction/recurring-transaction.module';
 import { AccountModule } from './account/account.module';
 import { InvestmentModule } from './investment/investment.module';
+import { ImageModule } from './image/image.module';
+import { DefaultSettingsModule } from './default-settings/default-settings.module';
+import { TestimonialModule } from './testimonial/testimonial.module';
+import { FeatureModule } from './feature/feature.module';
 
 @Module({
   imports: [
@@ -29,10 +33,14 @@ import { InvestmentModule } from './investment/investment.module';
     UserDetailModule,
     CategoryModule,
     NotificationModule,
-    TransactionModule,
     RecurringTransactionModule,
     AccountModule,
+    TransactionModule,
     InvestmentModule,
+    ImageModule,
+    DefaultSettingsModule,
+    TestimonialModule,
+    FeatureModule,
   ],
   controllers: [AppController],
   providers: [AppService],

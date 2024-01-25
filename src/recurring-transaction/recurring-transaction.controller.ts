@@ -1,52 +1,17 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, UseGuards } from '@nestjs/common';
 import { RecurringTransactionService } from './recurring-transaction.service';
-import { CreateRecurringTransactionDto } from './dto/create-recurring-transaction.dto';
-import { UpdateRecurringTransactionDto } from './dto/update-recurring-transaction.dto';
+import { BaseController } from '../base/base.controller';
+import { RecurringTransaction } from './entities/recurring-transaction.entity';
+import { ApiTags } from '@nestjs/swagger';
+import { TokenGuard } from '../authentication/http/token.guard';
 
 @Controller('recurring-transaction')
-export class RecurringTransactionController {
+@ApiTags('Recurring Transaction')
+@UseGuards(TokenGuard)
+export class RecurringTransactionController extends BaseController<RecurringTransaction> {
   constructor(
     private readonly recurringTransactionService: RecurringTransactionService,
-  ) {}
-
-  @Post()
-  create(@Body() createRecurringTransactionDto: CreateRecurringTransactionDto) {
-    return this.recurringTransactionService.create(
-      createRecurringTransactionDto,
-    );
-  }
-
-  @Get()
-  findAll() {
-    return this.recurringTransactionService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.recurringTransactionService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateRecurringTransactionDto: UpdateRecurringTransactionDto,
   ) {
-    return this.recurringTransactionService.update(
-      +id,
-      updateRecurringTransactionDto,
-    );
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.recurringTransactionService.remove(+id);
+    super(recurringTransactionService);
   }
 }

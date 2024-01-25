@@ -1,4 +1,4 @@
-import { Entity, OneToOne, OneToMany, Column } from 'typeorm';
+import { Entity, OneToOne, OneToMany, Column, JoinColumn } from 'typeorm';
 import { CoreEntity } from '../../base/entities/base.entity';
 import { User } from '../../user/entities/user.entity';
 
@@ -32,5 +32,6 @@ export class UserDetail extends CoreEntity {
   readonly occupation: string;
 
   @OneToOne(() => User)
-  userId: User;
+  @JoinColumn()
+  user: User;
 }

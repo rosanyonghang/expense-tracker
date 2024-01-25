@@ -4,7 +4,7 @@ import { TokenGuard } from 'src/authentication/http/token.guard';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { IBaseService } from './IBaseService.service';
 
-export class BaseController<T extends CoreEntity, U> {
+export class BaseController<T extends CoreEntity> {
   private dtoClass: any;
   constructor(private readonly IBaseService: IBaseService<T>) {}
 
@@ -29,9 +29,6 @@ export class BaseController<T extends CoreEntity, U> {
   })
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
-  @ApiBody({
-    type: U
-  })
   async create(@Body() entity: T): Promise<number> {
     return this.IBaseService.create(entity);
   }
@@ -43,10 +40,13 @@ export class BaseController<T extends CoreEntity, U> {
     this.IBaseService.delete(id);
   }
 
-  @Put()
+  @Put(':id')
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @ApiResponse({ status: 200, description: 'Entity deleted successfully.' })
-  async update(@Body() entity: T): Promise<T> {
-    return this.IBaseService.update(entity);
+  async update(@Param('id') id: number, @Body() entity: T): Promise<T> {
+    return this.IBaseService.update({
+      id: id,
+      ...entity,
+    });
   }
 }

@@ -90,14 +90,16 @@ export class AuthenticationController {
     },
   })
   async loginUser(req) {
-    const user = await this.userRepository.findOneOrFail({
-      where: { email: req.username },
-    });
+    const user = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.id', 'details') // Assuming 'details' is the property name for the UserDetails relation in the User entity
+      .where('user.email = :email', { email: req.username })
+      .getOneOrFail();
+
     const token = await this.tokenStorage.generateToken({
       data: {
         id: user.id,
         email: user.email,
-        password: user.password,
       },
     });
 
