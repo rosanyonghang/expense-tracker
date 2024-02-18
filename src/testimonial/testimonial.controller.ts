@@ -60,11 +60,7 @@ export class TestimonialController extends BaseController<Testimonial> {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Put('/:id')
-  async update(
-    @Param('id') id: number,
-    @Body() entity: Testimonial,
-    @Req() req: any,
-  ) {
+  async update(@Param('id') id: number, @Body() entity: any, @Req() req: any) {
     return this.testimonialService.update({
       ...entity,
       id: +id,

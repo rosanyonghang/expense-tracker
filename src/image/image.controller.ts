@@ -13,7 +13,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
-import { ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { editFileName, imageFileFilter } from '../utils/images.utils';
 import { TokenGuard } from '../authentication/http/guards/token.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -40,6 +40,7 @@ export class ImageController {
     description: 'Image file', // Description for Swagger
     type: UploadImageDto, // Create a DTO for the file
   })
+  @ApiBearerAuth()
   uploadImage(@UploadedFile() file) {
     const createImageDto = {
       title: file.filename,

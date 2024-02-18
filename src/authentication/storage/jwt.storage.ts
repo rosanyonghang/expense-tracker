@@ -36,7 +36,7 @@ export class JwtStorage implements TokenStorage {
         sub: user.id,
       } as TokenBody,
       {
-        secret: process.env.JWT_SECRET ?? 'restrobytessecret2023',
+        secret: process.env.JWT_SECRET ?? 'expensetracker2024',
         expiresIn: JwtStorage.TOKEN_EXPIRY,
       },
     );
@@ -46,10 +46,11 @@ export class JwtStorage implements TokenStorage {
     const tokenBody: TokenBody = await this.jwtService.verifyAsync<TokenBody>(
       token,
       {
-        secret: process.env.JWT_SECRET ?? 'restrobytessecret2023',
+        secret: process.env.JWT_SECRET ?? 'expensetracker2024',
       },
     );
 
+    console.log(tokenBody);
     if (tokenBody.type !== JwtStorage.TOKEN_TYPE) {
       throw new Error('Invalid token');
     }

@@ -69,7 +69,7 @@ export class FeatureController extends BaseController<Feature> {
   @UseGuards(TokenGuard, RolesGuard)
   @Roles(Role.ADMIN)
   @ApiBearerAuth()
-  async update(@Param('id') id: number, @Body() entity: Feature) {
+  async update(@Param('id') id: number, @Body() entity: any) {
     return this.featureService.update({
       ...entity,
       id: +id,

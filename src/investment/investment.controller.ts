@@ -44,7 +44,7 @@ export class InvestmentController extends BaseController<Investment> {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Put('/:id')
-  async update(@Param('id') id: number, @Body() entity: Investment) {
+  async update(@Param('id') id: number, @Body() entity: any) {
     return this.investmentService.update({
       ...entity,
       id: +id,

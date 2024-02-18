@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
@@ -22,6 +23,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { TokenGuard } from '../guards/token.guard';
+import axios from 'axios';
 
 @ApiTags('Authentication')
 @Controller()
@@ -79,7 +81,7 @@ export class AuthenticationController {
     }
 
     return {
-      user,
+      user: user[0],
       accessToken: token,
       refreshToken: token, // Todo: will implement later
       tokenType: 'bearer',
@@ -103,6 +105,14 @@ export class AuthenticationController {
     return new UserDetailResponse({
       ...user,
     });
+  }
+
+  @Post('google-connect')
+  async googleConnect(@Body() body: { token: string }) {
+    const res = await axios.get(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${body.token}`,
+    );
+    const obj = res.data;
   }
 }
 

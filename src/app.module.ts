@@ -22,6 +22,7 @@ import { FeatureModule } from './feature/feature.module';
 import { NotificationsGateway } from './notification/notifications.gateway';
 import { SummaryController } from './summary/summary.controller';
 import { SummaryModule } from './summary/summary.module';
+import { LoanModule } from './loan/loan.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { SummaryModule } from './summary/summary.module';
     TestimonialModule,
     FeatureModule,
     SummaryModule,
+    LoanModule,
   ],
   controllers: [AppController, SummaryController],
   providers: [AppService, NotificationsGateway],

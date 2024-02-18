@@ -76,11 +76,7 @@ export class AccountController extends BaseController<Account> {
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Put('/:id')
   @ResponseMessage('Record has been successfully updated')
-  async update(
-    @Param('id') id: number,
-    @Body() entity: Account,
-    @Req() req: any,
-  ) {
+  async update(@Param('id') id: number, @Body() entity: any, @Req() req: any) {
     return this.accountService.update({
       ...entity,
       id: +id,
