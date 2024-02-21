@@ -4,3 +4,8 @@ export enum StatusEnum {
   INACTIVE = 'INACTIVE',
   REJECTED = 'REJECTED',
 }
+
+export enum AcknowledgementStatus {
+  ACKNOWLEDGED = 'ACKNOWLEDGED',
+  UNACKNOWLEDGED = 'UNACKNOWLEDGED',
+}

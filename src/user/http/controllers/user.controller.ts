@@ -14,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserExceptionFilter } from '../exception-filters/create-user.exception-filter';
-import { ApiBasicAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { TokenGuard } from '../../../authentication/http/guards/token.guard';
 import { DuplicateUserExceptionFilter } from '../exception-filters/duplicate-user.exception-filter';
 import { CreateUserRequest } from '../requests/create-user.request';
@@ -29,6 +29,9 @@ import { editFileName, imageFileFilter } from '../../../utils/images.utils';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Image } from '../../../image/entities/image.entity';
 import { ImageService } from 'src/image/image.service';
+import { CreateRecurringTransactionDto } from '../../../recurring-transaction/dto/create-recurring-transaction.dto';
+import { ChangePasswordDto } from '../../../authentication/http/dto/Password.dto';
+import { UpdateUserDto } from '../dto/User.dto';
 @Controller()
 @ApiTags('User')
 @ApiBasicAuth()
@@ -92,6 +95,11 @@ export class UserController {
 
   @Put('user/change-password')
   @UseGuards(TokenGuard)
+  @ApiBody({
+    isArray: false,
+    description: 'Change password API',
+    type: ChangePasswordDto,
+  })
   changePassword(@Req() req, @Body() data) {
     return this.userService.changePassword(req.user.id, data);
   }
@@ -110,6 +118,11 @@ export class UserController {
 
   @Put('/user/:id')
   @UseGuards(TokenGuard)
+  @ApiBody({
+    isArray: false,
+    description: 'Change password API',
+    type: UpdateUserDto,
+  })
   updateUser(@Param('id') id: string, @Body() data) {
     return this.userService.updateUser(id, data);
   }

@@ -23,6 +23,8 @@ import { NotificationsGateway } from './notification/notifications.gateway';
 import { SummaryController } from './summary/summary.controller';
 import { SummaryModule } from './summary/summary.module';
 import { LoanModule } from './loan/loan.module';
+import { ComplaintModule } from './complaint/complaint.module';
+import { QueryModule } from './query/query.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { LoanModule } from './loan/loan.module';
     FeatureModule,
     SummaryModule,
     LoanModule,
+    ComplaintModule,
+    QueryModule,
   ],
   controllers: [AppController, SummaryController],
   providers: [AppService, NotificationsGateway],
