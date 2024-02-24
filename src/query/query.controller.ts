@@ -43,6 +43,12 @@ export class QueryController {
     return this.queryService.findAll();
   }
 
+  @Get('/status/:status')
+  @UseGuards(TokenGuard)
+  findAllByStatus(@Param('status') status: string) {
+    return this.queryService.findAllByStatus(status);
+  }
+
   @Get(':id')
   @UseGuards(TokenGuard)
   findOne(@Param('id') id: string) {

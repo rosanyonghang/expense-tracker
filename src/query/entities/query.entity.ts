@@ -9,6 +9,10 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { User } from '../../user/entities/user.entity';
+import {
+  AcknowledgementStatus,
+  StatusEnum,
+} from '../../utils/enums/status.enum';
 
 @Entity()
 export class Query {
@@ -29,6 +33,13 @@ export class Query {
 
   @Column()
   description: string;
+
+  @Column({
+    type: 'enum',
+    enum: AcknowledgementStatus,
+    default: AcknowledgementStatus.UNACKNOWLEDGED,
+  })
+  status: AcknowledgementStatus;
 
   @Exclude()
   @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
