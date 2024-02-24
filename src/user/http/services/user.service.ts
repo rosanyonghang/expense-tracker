@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { comparePasswords } from '../../../authentication/http/controllers/authentication.controller';
 import { BcryptService } from '../../../authentication/services/bcrypt.service';
+import { UserDetail } from '../../../user-detail/entities/user-detail.entity';
 
 @Injectable()
 export class UserService {
@@ -14,7 +15,66 @@ export class UserService {
   ) {}
 
   findAll() {
-    return this.userRepository.createQueryBuilder('user').getMany();
+    // return this.userRepository
+    //   .createQueryBuilder('user')
+    //   .leftJoin(
+    //     'user_detail',
+    //     'user_detail',
+    //     '"user".id = "user_detail"."userId"',
+    //   )
+    //   .select([
+    //     'user.id',
+    //     'user.email',
+    //     'user.prefix',
+    //     'user.phone',
+    //     'user.googleId',
+    //     'user.facebookId',
+    //     'user.verified',
+    //     'user.firstTime',
+    //     'user.status',
+    //     'user.role',
+    //     'user.userType',
+    //     'user_detail.fullname',
+    //     'user_detail.img',
+    //     'user_detail.openingBalance',
+    //     'user_detail.address',
+    //     'user_detail.occupation',
+    //   ])
+    //   .getMany();
+    //
+    const query = `
+         SELECT "user".id, "user".email, "user".prefix, "user".phone, "user"."googleId", "user"."facebookId", "user".verified, "user"."firstTime", 
+         "user".status, "user".role, "user"."userType", "user"."createdAt",
+        user_detail.fullname, user_detail.img, user_detail."openingBalance", user_detail.address, user_detail.occupation
+        FROM "user"
+        LEFT JOIN user_detail ON "user".id = user_detail."userId"
+    `;
+
+    return this.userRepository.query(query);
+  }
+
+  findAllByStatus(status: string) {
+    const userStatuses = {
+      all: 'ALL',
+      active: 'ACTIVE',
+      pending: 'PENDING',
+      inactive: 'INACTIVE',
+      rejected: 'REJECTED',
+    };
+    if (status === 'all') {
+      return this.findAll();
+    } else {
+      const query = `
+         SELECT "user".id, "user".email, "user".prefix, "user".phone, "user"."googleId", "user"."facebookId", "user".verified, "user"."firstTime", 
+         "user".status, "user".role, "user"."userType", "user"."createdAt",
+        user_detail.fullname, user_detail.img, user_detail."openingBalance", user_detail.address, user_detail.occupation
+        FROM "user"
+        LEFT JOIN user_detail ON "user".id = user_detail."userId"
+        WHERE "user".status = $1
+    `;
+
+      return this.userRepository.query(query, [userStatuses[status]]);
+    }
   }
 
   findOne(id: number) {

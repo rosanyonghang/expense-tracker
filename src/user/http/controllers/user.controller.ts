@@ -102,6 +102,13 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('/user/type/:status')
+  @UseGuards(TokenGuard)
+  @ApiBearerAuth()
+  getAllUsersByStatus(@Param('status') status: string) {
+    return this.userService.findAllByStatus(status);
+  }
+
   @Put('user/change-password')
   @UseGuards(TokenGuard)
   @ApiBearerAuth()

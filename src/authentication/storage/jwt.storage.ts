@@ -12,7 +12,7 @@ interface TokenBody {
 
 @Injectable()
 export class JwtStorage implements TokenStorage {
-  private static readonly TOKEN_EXPIRY = '7 days';
+  private static readonly TOKEN_EXPIRY = '7d';
   private static readonly TOKEN_TYPE = 'authentication';
 
   private readonly jwtService: JwtService;
