@@ -12,13 +12,28 @@ import { QueryService } from './query.service';
 import { CreateQueryDto } from './dto/create-query.dto';
 import { UpdateQueryDto } from './dto/update-query.dto';
 import { TokenGuard } from '../authentication/http/guards/token.guard';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ResponseMessage } from '../core/decorators/response.decorator';
 
 @Controller('query')
+@ApiTags('Query')
 export class QueryController {
   constructor(private readonly queryService: QueryService) {}
 
-  @Post()
-  create(@Body() createQueryDto: CreateQueryDto) {
+  @ApiBody({
+    isArray: false,
+    description: 'Create Result API',
+    type: CreateQueryDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully created.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @Post('')
+  @ResponseMessage('Record has been successfully created')
+  create(@Body() createQueryDto: any) {
     return this.queryService.create(createQueryDto);
   }
 
@@ -34,7 +49,20 @@ export class QueryController {
     return this.queryService.findOne(+id);
   }
 
+  @ApiBody({
+    isArray: false,
+    description: 'Update Result API',
+    type: CreateQueryDto,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The record has been successfully updated.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Put(':id')
+  @ApiBearerAuth()
+  @ResponseMessage('Record has been successfully updated')
   @UseGuards(TokenGuard)
   update(@Param('id') id: string, @Body() updateQueryDto: UpdateQueryDto) {
     return this.queryService.update(+id, updateQueryDto);
@@ -42,6 +70,7 @@ export class QueryController {
 
   @Delete(':id')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   remove(@Param('id') id: string) {
     return this.queryService.remove(+id);
   }

@@ -14,7 +14,13 @@ import {
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateUserExceptionFilter } from '../exception-filters/create-user.exception-filter';
-import { ApiBasicAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiTags,
+} from '@nestjs/swagger';
 import { TokenGuard } from '../../../authentication/http/guards/token.guard';
 import { DuplicateUserExceptionFilter } from '../exception-filters/duplicate-user.exception-filter';
 import { CreateUserRequest } from '../requests/create-user.request';
@@ -59,6 +65,7 @@ export class UserController {
     }),
   )
   @ApiConsumes('multipart/form-data')
+  @ApiBearerAuth()
   async createUser(
     @Body() body: CreateUserRequest,
     @UploadedFile() image?: any,
@@ -83,18 +90,21 @@ export class UserController {
   @UseFilters(new DuplicateUserExceptionFilter())
   @UseFilters(new CreateUserExceptionFilter())
   @Get('/user/me')
+  @ApiBearerAuth()
   async getUser(@Req() req) {
     return this.userService.findOne(req.user.id);
   }
 
   @Get('/user/all')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   getAllUsers() {
     return this.userService.findAll();
   }
 
   @Put('user/change-password')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   @ApiBody({
     isArray: false,
     description: 'Change password API',
@@ -106,18 +116,21 @@ export class UserController {
 
   @Put('user/change-password/:id')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   changePasswordForUser(@Req() req, @Param('id') id, @Body() data) {
     return this.userService.changePasswordForUser(id, data);
   }
 
   @Get('/user/:id')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   getUserById(@Param('id') id: string) {
     return this.userService.findOne(+id);
   }
 
   @Put('/user/:id')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   @ApiBody({
     isArray: false,
     description: 'Change password API',

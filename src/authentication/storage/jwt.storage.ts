@@ -50,7 +50,6 @@ export class JwtStorage implements TokenStorage {
       },
     );
 
-    console.log(tokenBody);
     if (tokenBody.type !== JwtStorage.TOKEN_TYPE) {
       throw new Error('Invalid token');
     }

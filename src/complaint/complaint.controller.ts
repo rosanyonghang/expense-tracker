@@ -14,10 +14,11 @@ import { CreateComplaintDto } from './dto/create-complaint.dto';
 import { UpdateComplaintDto } from './dto/update-complaint.dto';
 import { Complaint } from './entities/complaint.entity';
 import { BaseController } from '../base/base.controller';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '../core/decorators/response.decorator';
 
 @Controller('complaint')
+@ApiTags('Complaint')
 export class ComplaintController extends BaseController<Complaint> {
   constructor(private readonly complaintService: ComplaintService) {
     super(complaintService);
@@ -34,6 +35,7 @@ export class ComplaintController extends BaseController<Complaint> {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Post('')
+  @ApiBearerAuth()
   @ResponseMessage('Record has been successfully created')
   async create(@Body() entity, @Req() req: any) {
     return this.complaintService.create({
@@ -55,6 +57,7 @@ export class ComplaintController extends BaseController<Complaint> {
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
   @Put('/:id')
+  @ApiBearerAuth()
   @ResponseMessage('Record has been successfully updated')
   async update(@Param('id') id: number, @Body() entity, @Req() req: any) {
     return this.complaintService.update({
