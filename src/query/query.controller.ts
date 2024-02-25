@@ -39,18 +39,21 @@ export class QueryController {
 
   @Get()
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   findAll() {
     return this.queryService.findAll();
   }
 
   @Get('/status/:status')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   findAllByStatus(@Param('status') status: string) {
     return this.queryService.findAllByStatus(status);
   }
 
   @Get(':id')
   @UseGuards(TokenGuard)
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.queryService.findOne(+id);
   }
