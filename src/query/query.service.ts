@@ -47,11 +47,10 @@ export class QueryService {
       acknowledged: 'ACKNOWLEDGED',
       unacknowledged: 'UNACKNOWLEDGED',
     };
-    return this.queryRepository.find({
-      where: {
-        status: queryStatus[status],
-      },
-    });
+    return this.queryRepository
+      .createQueryBuilder('query')
+      .where('status = :status', { status: queryStatus[status] })
+      .getMany();
   }
 
   findOne(id: number) {

@@ -14,4 +14,15 @@ export class ComplaintService extends BaseService<Complaint> {
   ) {
     super(complaintRepository);
   }
+
+  findAllByStatus(status: string) {
+    const complaintStatus = {
+      acknowledged: 'ACKNOWLEDGED',
+      unacknowledged: 'UNACKNOWLEDGED',
+    };
+    return this.complaintRepository
+      .createQueryBuilder('query')
+      .where('status = :status', { status: complaintStatus[status] })
+      .getMany();
+  }
 }

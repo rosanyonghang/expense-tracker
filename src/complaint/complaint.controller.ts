@@ -8,6 +8,7 @@ import {
   Delete,
   Req,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ComplaintService } from './complaint.service';
 import { CreateComplaintDto } from './dto/create-complaint.dto';
@@ -16,6 +17,7 @@ import { Complaint } from './entities/complaint.entity';
 import { BaseController } from '../base/base.controller';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ResponseMessage } from '../core/decorators/response.decorator';
+import { TokenGuard } from '../authentication/http/guards/token.guard';
 
 @Controller('complaint')
 @ApiTags('Complaint')
@@ -65,5 +67,12 @@ export class ComplaintController extends BaseController<Complaint> {
       id: +id,
       updatedBy: req.user.id,
     });
+  }
+
+  @Get('/status/:status')
+  @UseGuards(TokenGuard)
+  @ApiBearerAuth()
+  findAllByStatus(@Param('status') status: string) {
+    return this.complaintService.findAllByStatus(status);
   }
 }
