@@ -16,12 +16,18 @@ export class QueryService {
   ) {}
 
   async create(createQueryDto: any) {
+    console.log(createQueryDto);
+    const query: any = await this.queryRepository
+      .createQueryBuilder('query')
+      .insert()
+      .into(Query)
+      .values([createQueryDto])
+      .execute();
     this.notificationGateway.server.emit('notification', {
       message: `${createQueryDto.fullname} has sent a new query.`,
       type: 'query',
       title: 'New Query Received',
     });
-    const query: any = await this.queryRepository.create(createQueryDto);
     await this.notificationService.create({
       title: 'Query Added',
       description: `${query.fullname} has added a new query`,
